@@ -69,8 +69,31 @@ public class JsonComposeTest {
         JsonCompose.compose(data);
     }
 
+    @Test
+    public void shouldComposeListInObject() {
+        Map<String, Object> data = new MapBuilder()
+                .add("list", Arrays.asList(1, 2, 3))
+                .build();
+        Assert.assertEquals("{\"list\":[1,2,3]}", JsonCompose.compose(data));
+    }
+
+    @Test
+    public void integrationTest() {
+        Map<String, Object> data = new MapBuilder()
+                .add("list", Arrays.asList(
+                        new MapBuilder().add("key", null).build(),
+                        "secondItem"
+                ))
+                .add("nested", new MapBuilder().add("false", false).add("true", true).build())
+                .add("null", null)
+                .add("string", "ayy")
+                .add("true", true)
+                .build();
+        Assert.assertEquals("{\"list\":[{\"key\":null},\"secondItem\"],\"nested\":{\"false\":false,\"true\":true},\"null\":null,\"string\":\"ayy\",\"true\":true}", JsonCompose.compose(data));
+    }
+
     private static class MapBuilder {
-        private final Map<String, Object> map = new HashMap<>();
+        private final Map<String, Object> map = new LinkedHashMap<>();
 
         MapBuilder add(String key, Object value) {
             map.put(key, value);
