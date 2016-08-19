@@ -20,8 +20,8 @@ public class JsonCompose {
         }
     }
 
-    public static String compose(int data) {
-        return Integer.toString(data);
+    public static String compose(long data) {
+        return Long.toString(data);
     }
 
     public static String compose(double data) {
@@ -42,6 +42,21 @@ public class JsonCompose {
         }
 
         StringBuilder builder = new StringBuilder();
+        internalMapCompose(builder, data);
+        return builder.toString();
+    }
+
+    public static String compose(Collection data) {
+        if (data == null) {
+            return "null";
+        }
+
+        StringBuilder builder = new StringBuilder();
+        internalCollectionCompose(builder, data);
+        return builder.toString();
+    }
+
+    private static void internalMapCompose(StringBuilder builder, Map<String, Object> data) {
         builder.append("{");
 
         boolean first = true;
@@ -57,31 +72,28 @@ public class JsonCompose {
             if (child == null) {
                 builder.append("null");
             } else if (child instanceof String) {
-                builder.append(compose((String) child));
+                builder.append("\"").append(child).append("\"");
             } else if (child instanceof Map) {
-                builder.append(compose((Map<String, Object>) child));
+                internalMapCompose(builder, (Map<String, Object>) child);
             } else if (child instanceof Collection) {
-                builder.append(compose((Collection) child));
-            } else if (child instanceof Integer) {
-                builder.append(compose((Integer) child));
-            } else if (child instanceof Double) {
-                builder.append(compose((Double) child));
+                internalCollectionCompose(builder, (Collection) child);
             } else if (child instanceof Boolean) {
-                builder.append(compose((Boolean) child));
+                if ((Boolean) child) {
+                    builder.append("true");
+                } else {
+                    builder.append("false");
+                }
+            } else if (child instanceof Long || child instanceof Integer || child instanceof Double
+                    || child instanceof Float || child instanceof Short || child instanceof Byte) {
+                builder.append(child.toString());
             } else {
                 throw new JsonComposeException("Unexpected child of type \"" + child.getClass() + "\"");
             }
         }
         builder.append("}");
-        return builder.toString();
     }
 
-    public static String compose(Collection data) {
-        if (data == null) {
-            return "null";
-        }
-
-        StringBuilder builder = new StringBuilder();
+    private static void internalCollectionCompose(StringBuilder builder, Collection data) {
         builder.append("[");
 
         boolean first = true;
@@ -97,20 +109,22 @@ public class JsonCompose {
             } else if (child instanceof String) {
                 builder.append(compose((String) child));
             } else if (child instanceof Map) {
-                builder.append(compose((Map<String, Object>) child));
+                internalMapCompose(builder, (Map<String, Object>) child);
             } else if (child instanceof Collection) {
-                builder.append(compose((Collection) child));
-            } else if (child instanceof Integer) {
-                builder.append(compose((Integer) child));
-            } else if (child instanceof Double) {
-                builder.append(compose((Double) child));
+                internalCollectionCompose(builder, (Collection) child);
             } else if (child instanceof Boolean) {
-                builder.append(compose((Boolean) child));
+                if ((Boolean) child) {
+                    builder.append("true");
+                } else {
+                    builder.append("false");
+                }
+            } else if (child instanceof Long || child instanceof Integer || child instanceof Double
+                    || child instanceof Float || child instanceof Short || child instanceof Byte) {
+                builder.append(child.toString());
             } else {
                 throw new JsonComposeException("Unexpected child of type \"" + child.getClass() + "\"");
             }
         }
         builder.append("]");
-        return builder.toString();
     }
 }

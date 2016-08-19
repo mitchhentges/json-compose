@@ -1,3 +1,10 @@
+# 1.0.1
+
+Bugfix/Performance release
+
+* Improve performance by reusing same StringBuilder
+* Properly handles Long/Short/Byte/Float
+
 # 1.0.0
 
 Initial release

@@ -17,6 +17,12 @@ public class JsonComposeTest {
     }
 
     @Test
+    public void shouldComposeLongs() {
+        Assert.assertEquals("1", JsonCompose.compose(1L));
+        Assert.assertEquals("[1]", JsonCompose.compose(Collections.singletonList(1L)));
+    }
+
+    @Test
     public void shouldComposeComplexNumbers() {
         Assert.assertEquals("-2.2", JsonCompose.compose(-2.2));
     }
