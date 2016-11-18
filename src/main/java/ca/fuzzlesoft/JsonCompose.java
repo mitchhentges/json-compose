@@ -12,6 +12,11 @@ public class JsonCompose {
 
     private JsonCompose() {}
 
+    /**
+     * Composes boolean data into a json string
+     * @param data composed
+     * @return string containing contents of data
+     */
     public static String compose(boolean data) {
         if (data) {
             return "true";
@@ -20,14 +25,29 @@ public class JsonCompose {
         }
     }
 
+    /**
+     * Composes integer data into a json string
+     * @param data composed
+     * @return string containing contents of data
+     */
     public static String compose(long data) {
         return Long.toString(data);
     }
 
+    /**
+     * Composes integer data into a json string
+     * @param data composed
+     * @return string containing contents of data
+     */
     public static String compose(double data) {
         return Double.toString(data);
     }
 
+    /**
+     * Composes string data into a json string (either quotes the provided string, or the string "null")
+     * @param data composed
+     * @return string containing contents of data
+     */
     public static String compose(String data) {
         if (data == null) {
             return "null";
@@ -36,6 +56,11 @@ public class JsonCompose {
         return "\"" + data + "\"";
     }
 
+    /**
+     * Composes {@link Map} data into a json string
+     * @param data composed
+     * @return string containing contents of data
+     */
     public static String compose(Map<String, Object> data) {
         if (data == null) {
             return "null";
@@ -46,6 +71,11 @@ public class JsonCompose {
         return builder.toString();
     }
 
+    /**
+     * Composes {@link Collection} data into a json string
+     * @param data composed
+     * @return string containing contents of data
+     */
     public static String compose(Collection data) {
         if (data == null) {
             return "null";

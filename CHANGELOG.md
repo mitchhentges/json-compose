@@ -1,3 +1,9 @@
+# 1.0.2
+
+Documentation release
+
+* Add documentation to each public function
+
 # 1.0.1
 
 Bugfix/Performance release
