@@ -20,13 +20,13 @@ JsonCompose.compose(map); //{\"key\":\"value\"}
 <dependency>
     <groupId>ca.fuzzlesoft</groupId>
     <artifactId>json-compose</artifactId>
-    <version>1.0.1</version>
+    <version>1.0.2</version>
 </dependency>
 ```
 
 **Gradle**
 ```
-compile 'ca.fuzzlesoft:json-compose:1.0.1'
+compile 'ca.fuzzlesoft:json-compose:1.0.2'
 ```
 
 ## Features
