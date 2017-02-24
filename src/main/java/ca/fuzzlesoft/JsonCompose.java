@@ -175,6 +175,11 @@ public class JsonCompose {
                 continue;
             }
 
+            if (maskChar == '\1') {
+                throw new JsonComposeException("Cannot encode any control character other than: backspace, tab, " +
+                        "newline, formfeed, or carriage return");
+            }
+
             builder.append(data.substring(start, i));
             builder.append('\\');
             builder.append(maskChar);
@@ -185,39 +190,40 @@ public class JsonCompose {
         builder.append("\"");
     }
 
+    // use '\0' and '\1' rather than 0 and 1 to avoid casting. This improves performance. The JVM is weird
     private static char[] ESCAPE_MASK = new char[] {
-            '\0',
-            '\0',
-            '\0',
-            '\0',
-            '\0',
-            '\0',
-            '\0',
-            '\0',
+            '\1',
+            '\1',
+            '\1',
+            '\1',
+            '\1',
+            '\1',
+            '\1',
+            '\1',
             'b',
             't',
             'n',
-            '\0',
+            '\1',
             'f',
             'r',
-            '\0',
-            '\0',
-            '\0',
-            '\0',
-            '\0',
-            '\0',
-            '\0',
-            '\0',
-            '\0',
-            '\0',
-            '\0',
-            '\0',
-            '\0',
-            '\0',
-            '\0',
-            '\0',
-            '\0',
-            '\0',
+            '\1',
+            '\1',
+            '\1',
+            '\1',
+            '\1',
+            '\1',
+            '\1',
+            '\1',
+            '\1',
+            '\1',
+            '\1',
+            '\1',
+            '\1',
+            '\1',
+            '\1',
+            '\1',
+            '\1',
+            '\1',
             '\0',
             '\0',
             '\"',

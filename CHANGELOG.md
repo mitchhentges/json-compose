@@ -1,3 +1,11 @@
+# 1.0.3
+
+Bugfix release
+
+* For the seven special characters (" \ backspace formfeed newline carriage-return tab), encode with backslash instead
+of the actual control character.
+* For all other control characters, throw exception, because they are illegal in JSON
+
 # 1.0.2
 
 Documentation release

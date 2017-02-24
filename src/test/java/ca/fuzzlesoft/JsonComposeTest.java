@@ -30,6 +30,7 @@ public class JsonComposeTest {
     @Test
     public void shouldComposeString() {
         Assert.assertEquals("\"test\"", JsonCompose.compose("test"));
+        Assert.assertEquals("\" \"", JsonCompose.compose(" "));
     }
 
     @Test
@@ -84,7 +85,7 @@ public class JsonComposeTest {
     }
 
     @Test
-    public void shouldEscapeControlCharacters() {
+    public void shouldEscapeSpecialControlCharacters() {
         Assert.assertEquals("\"\\\"\"", JsonCompose.compose("\""));
         Assert.assertEquals("\"\\\\\"", JsonCompose.compose("\\"));
         Assert.assertEquals("\"\\b\"", JsonCompose.compose("\b"));
@@ -92,6 +93,19 @@ public class JsonComposeTest {
         Assert.assertEquals("\"\\n\"", JsonCompose.compose("\n"));
         Assert.assertEquals("\"\\r\"", JsonCompose.compose("\r"));
         Assert.assertEquals("\"\\t\"", JsonCompose.compose("\t"));
+    }
+
+    @Test
+    public void shouldExceptionMostControlCharacters() {
+        try {
+            JsonCompose.compose("\0");
+            Assert.fail("Should have thrown exception");
+        } catch(JsonComposeException ignored) {}
+
+        try {
+            JsonCompose.compose("\31");
+            Assert.fail("Should have thrown exception");
+        } catch(JsonComposeException ignored) {}
     }
 
     /**
