@@ -1,6 +1,7 @@
 # Json Compose [![Build Status](https://travis-ci.org/mitchhentges/json-compose.svg?branch=master)](https://travis-ci.org/mitchhentges/json-compose)
 
 A tool to quickly compose Java maps and lists of primitives into JSON strings.
+For parsing JSON strings, see [Json Parse](https://github.com/mitchhentges/json-parse/)
 
 ## Usage
 

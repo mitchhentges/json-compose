@@ -84,6 +84,26 @@ public class JsonComposeTest {
     }
 
     @Test
+    public void shouldEscapeControlCharacters() {
+        Assert.assertEquals("\"\\\"\"", JsonCompose.compose("\""));
+        Assert.assertEquals("\"\\\\\"", JsonCompose.compose("\\"));
+        Assert.assertEquals("\"\\b\"", JsonCompose.compose("\b"));
+        Assert.assertEquals("\"\\f\"", JsonCompose.compose("\f"));
+        Assert.assertEquals("\"\\n\"", JsonCompose.compose("\n"));
+        Assert.assertEquals("\"\\r\"", JsonCompose.compose("\r"));
+        Assert.assertEquals("\"\\t\"", JsonCompose.compose("\t"));
+    }
+
+    /**
+     * These don't _have_ to be escaped, so don't bother
+     */
+    @Test
+    public void shouldNotEscapeUnicodeOrSolidus() {
+        Assert.assertEquals("\"/\"", JsonCompose.compose("/"));
+        Assert.assertEquals("\"ሴ\"", JsonCompose.compose("ሴ"));
+    }
+
+    @Test
     public void integrationTest() {
         Map<String, Object> data = new MapBuilder()
                 .add("list", Arrays.asList(
