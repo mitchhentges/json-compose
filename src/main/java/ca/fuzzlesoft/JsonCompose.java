@@ -53,7 +53,9 @@ public class JsonCompose {
             return "null";
         }
 
-        return "\"" + data + "\"";
+        StringBuilder builder = new StringBuilder();
+        internalStringCompose(builder, data);
+        return builder.toString();
     }
 
     /**
@@ -102,7 +104,7 @@ public class JsonCompose {
             if (child == null) {
                 builder.append("null");
             } else if (child instanceof String) {
-                builder.append("\"").append(child).append("\"");
+                internalStringCompose(builder, (String) child);
             } else if (child instanceof Map) {
                 internalMapCompose(builder, (Map<String, Object>) child);
             } else if (child instanceof Collection) {
@@ -137,7 +139,7 @@ public class JsonCompose {
             if (child == null) {
                 builder.append("null");
             } else if (child instanceof String) {
-                builder.append(compose((String) child));
+                internalStringCompose(builder, (String) child);
             } else if (child instanceof Map) {
                 internalMapCompose(builder, (Map<String, Object>) child);
             } else if (child instanceof Collection) {
@@ -157,4 +159,160 @@ public class JsonCompose {
         }
         builder.append("]");
     }
+
+    private static void internalStringCompose(StringBuilder builder, String data) {
+        builder.append("\"");
+        int start = 0;
+
+        for (int i = 0; i < data.length(); i++) {
+            char currentChar = data.charAt(i);
+            if (currentChar > 127) {
+                continue;
+            }
+
+            char maskChar = ESCAPE_MASK[currentChar];
+            if (maskChar == '\0') {
+                continue;
+            }
+
+            builder.append(data.substring(start, i));
+            builder.append('\\');
+            builder.append(maskChar);
+            start = i + 1;
+        }
+
+        builder.append(data.substring(start, data.length()));
+        builder.append("\"");
+    }
+
+    private static char[] ESCAPE_MASK = new char[] {
+            '\0',
+            '\0',
+            '\0',
+            '\0',
+            '\0',
+            '\0',
+            '\0',
+            '\0',
+            'b',
+            't',
+            'n',
+            '\0',
+            'f',
+            'r',
+            '\0',
+            '\0',
+            '\0',
+            '\0',
+            '\0',
+            '\0',
+            '\0',
+            '\0',
+            '\0',
+            '\0',
+            '\0',
+            '\0',
+            '\0',
+            '\0',
+            '\0',
+            '\0',
+            '\0',
+            '\0',
+            '\0',
+            '\0',
+            '\"',
+            '\0',
+            '\0',
+            '\0',
+            '\0',
+            '\0',
+            '\0',
+            '\0',
+            '\0',
+            '\0',
+            '\0',
+            '\0',
+            '\0',
+            '\0',
+            '\0',
+            '\0',
+            '\0',
+            '\0',
+            '\0',
+            '\0',
+            '\0',
+            '\0',
+            '\0',
+            '\0',
+            '\0',
+            '\0',
+            '\0',
+            '\0',
+            '\0',
+            '\0',
+            '\0',
+            '\0',
+            '\0',
+            '\0',
+            '\0',
+            '\0',
+            '\0',
+            '\0',
+            '\0',
+            '\0',
+            '\0',
+            '\0',
+            '\0',
+            '\0',
+            '\0',
+            '\0',
+            '\0',
+            '\0',
+            '\0',
+            '\0',
+            '\0',
+            '\0',
+            '\0',
+            '\0',
+            '\0',
+            '\0',
+            '\0',
+            '\0',
+            '\\',
+            '\0',
+            '\0',
+            '\0',
+            '\0',
+            '\0',
+            '\0',
+            '\0',
+            '\0',
+            '\0',
+            '\0',
+            '\0',
+            '\0',
+            '\0',
+            '\0',
+            '\0',
+            '\0',
+            '\0',
+            '\0',
+            '\0',
+            '\0',
+            '\0',
+            '\0',
+            '\0',
+            '\0',
+            '\0',
+            '\0',
+            '\0',
+            '\0',
+            '\0',
+            '\0',
+            '\0',
+            '\0',
+            '\0',
+            '\0',
+            '\0'
+    };
 }
